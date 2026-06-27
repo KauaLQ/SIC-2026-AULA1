@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KauaLQ — Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Paleta GitHub Dark */
+    --bg-canvas: #0d1117;
+    --bg-elevated: #161b22;
+    --bg-elevated-2: #1c2128;
+    --border-default: #30363d;
+    --border-muted: #21262d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-orange: #d29922;
+    --accent-purple: #bc8cff;
+    --accent-red: #f85149;
+    --accent-cyan: #39c5cf;
+
+    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    --font-sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg-canvas);
+    color:var(--text-primary);
+    font-family:var(--font-sans);
+    line-height:1.6;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* Fundo com grid de "trilha de circuito" sutil */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(var(--border-muted) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-muted) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity:0.35;
+    pointer-events:none;
+    z-index:0;
+    mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
+  }
+
+  .container{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px;
+    position:relative;
+    z-index:1;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(13,17,23,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--border-default);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 24px;
+    max-width:1080px;
+    margin:0 auto;
+  }
+  .nav-brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:14px;
+    color:var(--text-primary);
+  }
+  .nav-brand .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--accent-green);
+    box-shadow:0 0 8px var(--accent-green);
+    animation:pulse 2s infinite;
+  }
+  .nav-links{
+    display:flex;
+    gap:24px;
+    font-size:13px;
+    font-family:var(--font-mono);
+    color:var(--text-secondary);
+  }
+  .nav-links a{ transition:color .2s; }
+  .nav-links a:hover{ color:var(--accent-blue); }
+
+  @keyframes pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:.4; }
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:96px 0 72px;
+    position:relative;
+  }
+  .hero-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--accent-green);
+    background:rgba(63,185,80,0.1);
+    border:1px solid rgba(63,185,80,0.3);
+    padding:5px 12px;
+    border-radius:6px;
+    margin-bottom:24px;
+  }
+  .hero h1{
+    font-family:var(--font-sans);
+    font-weight:800;
+    font-size:clamp(32px, 5.5vw, 56px);
+    line-height:1.15;
+    letter-spacing:-0.02em;
+    margin-bottom:18px;
+    max-width:760px;
+  }
+  .hero h1 .glow{
+    color:var(--accent-blue);
+  }
+  .hero p.lede{
+    font-size:17px;
+    color:var(--text-secondary);
+    max-width:620px;
+    margin-bottom:32px;
+  }
+  .hero-cta{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:var(--font-mono);
+    font-size:13px;
+    font-weight:500;
+    padding:10px 18px;
+    border-radius:6px;
+    border:1px solid var(--border-default);
+    cursor:pointer;
+    transition:all .2s;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-primary{
+    background:var(--accent-green);
+    color:#0d1117;
+    border-color:var(--accent-green);
+  }
+  .btn-primary:hover{ background:#4ac95f; transform:translateY(-1px); }
+  .btn-ghost{
+    background:var(--bg-elevated);
+    color:var(--text-primary);
+  }
+  .btn-ghost:hover{ border-color:var(--accent-blue); color:var(--accent-blue); }
+
+  /* janela de terminal decorativa no hero */
+  .terminal{
+    margin-top:56px;
+    background:var(--bg-elevated);
+    border:1px solid var(--border-default);
+    border-radius:8px;
+    overflow:hidden;
+    max-width:680px;
+    box-shadow:0 16px 40px -20px rgba(0,0,0,0.6);
+  }
+  .terminal-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    background:var(--bg-elevated-2);
+    border-bottom:1px solid var(--border-default);
+  }
+  .terminal-bar span{
+    width:11px; height:11px; border-radius:50%;
+  }
+  .tb-1{ background:#ff5f56; }
+  .tb-2{ background:#ffbd2e; }
+  .tb-3{ background:#27c93f; }
+  .terminal-title{
+    margin-left:8px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .terminal-body{
+    padding:18px 20px;
+    font-family:var(--font-mono);
+    font-size:13.5px;
+    color:var(--text-secondary);
+  }
+  .terminal-body .line{ margin-bottom:6px; white-space:pre-wrap; }
+  .terminal-body .prompt{ color:var(--accent-green); }
+  .terminal-body .key{ color:var(--accent-purple); }
+  .terminal-body .str{ color:var(--accent-orange); }
+  .terminal-body .com{ color:var(--text-muted); }
+  .caret{
+    display:inline-block;
+    width:8px; height:16px;
+    background:var(--accent-blue);
+    vertical-align:middle;
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ===== SECTION HEADERS ===== */
+  section{ padding:64px 0; border-top:1px solid var(--border-muted); }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:36px;
+  }
+  .section-tag{
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--accent-blue);
+    background:rgba(88,166,255,0.1);
+    border:1px solid rgba(88,166,255,0.25);
+    padding:3px 10px;
+    border-radius:6px;
+  }
+  .section-head h2{
+    font-size:24px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .section-sub{
+    color:var(--text-secondary);
+    font-size:15px;
+    margin-bottom:36px;
+    max-width:640px;
+  }
+
+  /* ===== SOBRE / TIMELINE ===== */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:40px;
+  }
+  .about-text p{
+    color:var(--text-secondary);
+    margin-bottom:16px;
+    font-size:15px;
+  }
+  .about-text strong{ color:var(--text-primary); font-weight:600; }
+
+  .timeline{
+    border-left:2px solid var(--border-default);
+    padding-left:24px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+    position:relative;
+  }
+  .timeline-item{ position:relative; }
+  .timeline-item::before{
+    content:"";
+    position:absolute;
+    left:-31px;
+    top:3px;
+    width:10px; height:10px;
+    border-radius:50%;
+    background:var(--bg-canvas);
+    border:2px solid var(--accent-green);
+  }
+  .timeline-item.active::before{
+    background:var(--accent-green);
+    box-shadow:0 0 0 4px rgba(63,185,80,0.15);
+  }
+  .timeline-status{
+    font-family:var(--font-mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--accent-green);
+    margin-bottom:4px;
+  }
+  .timeline-item:not(.active) .timeline-status{ color:var(--text-muted); }
+  .timeline-item h3{ font-size:15px; font-weight:600; margin-bottom:2px; }
+  .timeline-item p{ font-size:13.5px; color:var(--text-secondary); }
+
+  /* ===== STACK CARDS ===== */
+  .stack-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap:16px;
+  }
+  .stack-card{
+    background:var(--bg-elevated);
+    border:1px solid var(--border-default);
+    border-radius:10px;
+    padding:20px;
+    position:relative;
+    transition: transform .25s, border-color .25s, box-shadow .25s;
+    overflow:hidden;
+  }
+  .stack-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(120px 80px at 20% 0%, rgba(255,255,255,0.06), transparent 70%);
+    opacity:0;
+    transition:opacity .25s;
+  }
+  .stack-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--card-accent, var(--accent-blue));
+    box-shadow:0 12px 24px -16px var(--card-accent, rgba(88,166,255,0.4));
+  }
+  .stack-card:hover::after{ opacity:1; }
+  .stack-card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .stack-icon{
+    width:36px; height:36px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:14px;
+    background:color-mix(in srgb, var(--card-accent) 15%, transparent);
+    color:var(--card-accent);
+    border:1px solid color-mix(in srgb, var(--card-accent) 35%, transparent);
+  }
+  .stack-led{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--card-accent);
+    box-shadow:0 0 6px var(--card-accent);
+  }
+  .stack-card h4{
+    font-size:14.5px;
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .stack-card p{
+    font-size:12.5px;
+    color:var(--text-muted);
+    font-family:var(--font-mono);
+  }
+
+  .stack-group-label{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin:32px 0 14px;
+  }
+  .stack-group-label:first-child{ margin-top:0; }
+
+  /* ===== EXPERIÊNCIA / PROJETOS ===== */
+  .exp-card{
+    background:var(--bg-elevated);
+    border:1px solid var(--border-default);
+    border-radius:10px;
+    padding:24px;
+    margin-bottom:16px;
+    display:grid;
+    grid-template-columns: 28px 1fr;
+    gap:16px;
+  }
+  .exp-icon{
+    width:28px; height:28px;
+    border-radius:6px;
+    background:rgba(210,153,34,0.12);
+    border:1px solid rgba(210,153,34,0.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--accent-orange);
+    flex-shrink:0;
+  }
+  .exp-card h3{ font-size:15.5px; font-weight:600; margin-bottom:6px; }
+  .exp-card p{ font-size:14px; color:var(--text-secondary); }
+  .exp-tags{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .exp-tag{
+    font-family:var(--font-mono);
+    font-size:11px;
+    padding:3px 8px;
+    border-radius:5px;
+    background:var(--bg-elevated-2);
+    border:1px solid var(--border-default);
+    color:var(--text-secondary);
+  }
+
+  /* ===== FOCO / OBJETIVO ===== */
+  .focus-banner{
+    background:linear-gradient(135deg, rgba(88,166,255,0.08), rgba(63,185,80,0.06));
+    border:1px solid var(--border-default);
+    border-radius:12px;
+    padding:36px;
+    text-align:center;
+  }
+  .focus-banner p{
+    font-size:16px;
+    color:var(--text-primary);
+    max-width:640px;
+    margin:0 auto;
+    line-height:1.7;
+  }
+  .focus-banner .focus-icon{
+    font-size:22px;
+    margin-bottom:14px;
+  }
+
+  /* ===== FOOTER / CONTATO ===== */
+  footer{
+    padding:56px 0 40px;
+    border-top:1px solid var(--border-muted);
+    text-align:center;
+  }
+  footer h2{ font-size:22px; margin-bottom:10px; }
+  footer p{ color:var(--text-secondary); font-size:14px; margin-bottom:24px; }
+  .footer-links{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .footer-note{
+    margin-top:40px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-muted);
+  }
+
+  /* ===== RESPONSIVO ===== */
+  @media (max-width: 760px){
+    .about-grid{ grid-template-columns:1fr; }
+    .nav-links{ display:none; }
+    .hero{ padding:64px 0 48px; }
+  }
+
+  /* acessibilidade: foco visível */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent-blue);
+    outline-offset:2px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> tecnico.dev</div>
+    <div class="nav-links">
+      <a href="#sobre">sobre</a>
+      <a href="#stack">stack</a>
+      <a href="#experiencia">experiência</a>
+      <a href="#contato">contato</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">● status: em formação contínua</div>
+    <h1>Conectando <span class="glow">circuitos</span> e <span class="glow">código</span> para construir soluções inteligentes.</h1>
+    <p class="lede">Técnico em Eletrotécnica, atualmente em formação em Automação Industrial e Mecatrônica. Atuo na ponte entre hardware, automação e desenvolvimento de software — do reparo de placas ao deploy de aplicações web.</p>
+    <div class="hero-cta">
+      <a href="#stack" class="btn btn-primary">▸ ver stack técnica</a>
+      <a href="#contato" class="btn btn-ghost">enviar mensagem</a>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="tb-1"></span><span class="tb-2"></span><span class="tb-3"></span>
+        <span class="terminal-title">perfil.json</span>
+      </div>
+      <div class="terminal-body">
+        <div class="line"><span class="prompt">$</span> cat perfil.json</div>
+        <div class="line">{</div>
+        <div class="line">&nbsp;&nbsp;<span class="key">"formacao"</span>: <span class="str">"Técnico em Eletrotécnica"</span>,</div>
+        <div class="line">&nbsp;&nbsp;<span class="key">"cursando"</span>: [<span class="str">"Automação Industrial"</span>, <span class="str">"Mecatrônica"</span>],</div>
+        <div class="line">&nbsp;&nbsp;<span class="key">"instituicao"</span>: <span class="str">"IFCE - Campus Pecém"</span>,</div>
+        <div class="line">&nbsp;&nbsp;<span class="key">"areas"</span>: [<span class="str">"hardware"</span>, <span class="str">"automação"</span>, <span class="str">"dev web"</span>],</div>
+        <div class="line">&nbsp;&nbsp;<span class="key">"objetivo"</span>: <span class="str">"integrar tecnologia e automação"</span></div>
+        <div class="line">}<span class="caret"></span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="sobre">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">01</span>
+      <h2>Sobre / trajetória</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Formado em <strong>Técnico em Eletrotécnica</strong> pela E.E.E.P. Professora Abigail Sampaio, atualmente curso <strong>Automação Industrial</strong> (Técnico) e <strong>Mecatrônica Industrial</strong> (Tecnólogo) no <strong>IFCE — Campus Pecém</strong>.</p>
+        <p>Tenho experiência prática em <strong>manutenção eletrônica</strong>, atuando em uma microempresa de refrigeração, onde aprofundei conhecimentos em reparos e circuitos eletrônicos.</p>
+        <p>Participei de <strong>projetos de pesquisa, iniciação científica e extensão</strong>, desenvolvendo habilidades em design, projeto e fabricação de <strong>placas de circuito impresso (PCI)</strong>, além de programação de microcontroladores <strong>ESP</strong> e <strong>Arduino</strong> aplicados à robótica, IoT e sistemas inteligentes.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-status">concluído</div>
+          <h3>Técnico em Eletrotécnica</h3>
+          <p>E.E.E.P. Professora Abigail Sampaio</p>
+        </div>
+        <div class="timeline-item active">
+          <div class="timeline-status">em andamento</div>
+          <h3>Técnico em Automação Industrial</h3>
+          <p>IFCE — Campus Pecém</p>
+        </div>
+        <div class="timeline-item active">
+          <div class="timeline-status">em andamento</div>
+          <h3>Tecnólogo em Mecatrônica Industrial</h3>
+          <p>IFCE — Campus Pecém</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-status">experiência</div>
+          <h3>Manutenção Eletrônica</h3>
+          <p>Microempresa de refrigeração</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">02</span>
+      <h2>Stack técnica</h2>
+    </div>
+    <p class="section-sub">Componentes que compõem meu "circuito" de habilidades — do hardware ao software.</p>
+
+    <div class="stack-group-label">— hardware & automação</div>
+    <div class="stack-grid">
+      <div class="stack-card" style="--card-accent: var(--accent-orange);">
+        <div class="stack-card-top">
+          <div class="stack-icon">PCI</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>Design de PCI</h4>
+        <p>projeto & fabricação</p>
+      </div>
+      <div class="stack-card" style="--card-accent: var(--accent-cyan);">
+        <div class="stack-card-top">
+          <div class="stack-icon">µC</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>Arduino</h4>
+        <p>microcontroladores</p>
+      </div>
+      <div class="stack-card" style="--card-accent: var(--accent-purple);">
+        <div class="stack-card-top">
+          <div class="stack-icon">ESP</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>ESP32 / ESP8266</h4>
+        <p>IoT & conectividade</p>
+      </div>
+      <div class="stack-card" style="--card-accent: var(--accent-green);">
+        <div class="stack-card-top">
+          <div class="stack-icon">⚙</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>Automação Industrial</h4>
+        <p>sistemas inteligentes</p>
+      </div>
+    </div>
+
+    <div class="stack-group-label">— desenvolvimento web</div>
+    <div class="stack-grid">
+      <div class="stack-card" style="--card-accent: #e34f26;">
+        <div class="stack-card-top">
+          <div class="stack-icon">&lt;/&gt;</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>HTML</h4>
+        <p>estrutura & semântica</p>
+      </div>
+      <div class="stack-card" style="--card-accent: #2965f1;">
+        <div class="stack-card-top">
+          <div class="stack-icon">{ }</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>CSS</h4>
+        <p>estilo & layout</p>
+      </div>
+      <div class="stack-card" style="--card-accent: var(--accent-orange);">
+        <div class="stack-card-top">
+          <div class="stack-icon">J</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>Java</h4>
+        <p>lógica orientada a objetos</p>
+      </div>
+      <div class="stack-card" style="--card-accent: #f7df1e;">
+        <div class="stack-card-top">
+          <div class="stack-icon">JS</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>JavaScript</h4>
+        <p>interatividade</p>
+      </div>
+      <div class="stack-card" style="--card-accent: var(--accent-cyan);">
+        <div class="stack-card-top">
+          <div class="stack-icon">⚛</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>React</h4>
+        <p>interfaces dinâmicas</p>
+      </div>
+      <div class="stack-card" style="--card-accent: var(--accent-green);">
+        <div class="stack-card-top">
+          <div class="stack-icon">▸_</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>Node.js</h4>
+        <p>back-end & APIs</p>
+      </div>
+      <div class="stack-card" style="--card-accent: var(--accent-blue);">
+        <div class="stack-card-top">
+          <div class="stack-icon">DB</div>
+          <div class="stack-led"></div>
+        </div>
+        <h4>PostgreSQL</h4>
+        <p>banco de dados relacional</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experiencia">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-tag">03</span>
+      <h2>Experiência & projetos</h2>
+    </div>
+    <p class="section-sub">Onde a teoria encontrou a bancada — e o circuito encontrou o código.</p>
+
+    <div class="exp-card">
+      <div class="exp-icon">⚡</div>
+      <div>
+        <h3>Manutenção Eletrônica — Microempresa de Refrigeração</h3>
+        <p>Atuação direta em reparos e diagnóstico de circuitos eletrônicos, aprofundando o entendimento prático de componentes e sistemas de refrigeração.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">reparo de placas</span>
+          <span class="exp-tag">diagnóstico</span>
+          <span class="exp-tag">circuitos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-icon">🔬</div>
+      <div>
+        <h3>Pesquisa, Iniciação Científica & Extensão</h3>
+        <p>Desenvolvimento de habilidades em design e fabricação de placas de circuito impresso (PCI) e programação de microcontroladores aplicados à robótica e IoT.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">PCI</span>
+          <span class="exp-tag">robótica</span>
+          <span class="exp-tag">IoT</span>
+          <span class="exp-tag">ESP / Arduino</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-icon">💻</div>
+      <div>
+        <h3>Desenvolvimento Web</h3>
+        <p>Interesse e experiência prática construindo interfaces e aplicações com HTML, CSS, Java, JavaScript, React, Node.js e PostgreSQL.</p>
+        <div class="exp-tags">
+          <span class="exp-tag">front-end</span>
+          <span class="exp-tag">back-end</span>
+          <span class="exp-tag">full-stack</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="objetivo">
+  <div class="container">
+    <div class="focus-banner">
+      <div class="focus-icon">🎯</div>
+      <p>Busco constantemente <strong>integrar tecnologia, automação e software</strong> para o desenvolvimento de soluções inovadoras — unindo a precisão da engenharia eletrônica à flexibilidade do desenvolvimento de sistemas.</p>
+    </div>
+  </div>
+</section>
+
+<footer id="contato">
+  <div class="container">
+    <h2>Vamos construir algo juntos?</h2>
+    <p>Aberto a oportunidades em automação, eletrônica e desenvolvimento web.</p>
+    <div class="footer-links">
+      <a href="mailto:seuemail@exemplo.com" class="btn btn-primary">✉ e-mail</a>
+      <a href="#" class="btn btn-ghost">in linkedin</a>
+      <a href="#" class="btn btn-ghost">⌥ github</a>
+    </div>
+    <div class="footer-note">// build com HTML, CSS & JS — tema inspirado no GitHub Dark</div>
+  </div>
+</footer>
+
+<script>
+  // Reveal suave ao rolar a página
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.style.opacity = 1;
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('section, .terminal').forEach(el => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity .6s ease, transform .6s ease';
+    observer.observe(el);
+  });
+
+  // Header sempre visível na primeira carga (hero)
+  document.querySelector('.hero').style.opacity = 1;
+  document.querySelector('.hero').style.transform = 'translateY(0)';
+</script>
+
+</body>
+</html>
